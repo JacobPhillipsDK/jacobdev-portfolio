@@ -66,7 +66,7 @@ export default function TechnologyTabs() {
             </Reveal>
           </div>
           <p className="mt-4 hidden text-gray-500 dark:text-gray-400 lg:mt-0 lg:block lg:w-[35%]">
-            Here are what I'm currently learning and the technologies I use the
+            Here are what I&apos;m currently learning and the technologies I use the
             most.
           </p>
         </div>
