@@ -20,7 +20,7 @@ function About() {
                   />
               </div>
               <h2 className="text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-5xl lg:text-6xl">
-                  <TextReveal>Hey, I'm <span className="text-[#22c55e]">Jacob</span></TextReveal>
+                  <TextReveal>Hey, I&apos;m <span className="text-[#22c55e]">Jacob</span></TextReveal>
               </h2>
           </div>
           <p className="text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed px-4 mt-4">
