@@ -24,8 +24,7 @@ function Projects() {
   );
 
   return (
-    <MotionWrap className="w-full py-24 lg:py-32" id="projects">
-      <div className="px-4 md:px-6">
+    <MotionWrap className="w-full pb-16 lg:pb-16" id="projects">
         <div className="grid gap-10">
           <div className="flex w-full flex-col items-center justify-center text-center lg:flex-row lg:justify-between lg:text-left">
             <div className="flex flex-col items-center lg:items-start">
@@ -75,7 +74,6 @@ function Projects() {
               <CarouselNext />
             </Carousel>
           </div>
-        </div>
       </div>
     </MotionWrap>
   );

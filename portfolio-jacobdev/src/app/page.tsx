@@ -3,6 +3,7 @@ import {
     About,
     Projects,
     Experience,
+  Education
 } from '@/components/sections';
 import Technologies from '@/components/sections/technologies/Technologies';
 import Cursor from '@/components/cursor/cursor';
@@ -18,6 +19,7 @@ export default function Home() {
                     <Technologies />
                     <Projects />
                     <Experience />
+                    <Education />
                 </Container>
             </main>
             <Cursor />

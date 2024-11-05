@@ -8,7 +8,7 @@ import TextReveal from '@/components/motion/text-reveal';
 
 function About() {
   return (
-      <MotionWrap className="w-full py-24 lg:py-32" id="about">
+      <MotionWrap className="w-full pt-28 lg:pt-28" id="about">
           <div className="flex items-center gap-4 px-4">
               <div className="relative w-32 h-32">
                   <Image
