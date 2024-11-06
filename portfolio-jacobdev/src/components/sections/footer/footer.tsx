@@ -11,8 +11,8 @@ function Footer() {
             <div className="text-xs text-gray-500 dark:text-gray-400">
                 © 2024 {meta.author.name}. All rights reserved.
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center">
-                Made With   <span className="text-red-500 px-1 ">❤</span> by <span className=" pl-1 underline">{meta.author.name}</span>
+            <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center font-bold">
+                Made & Hosted With  <span className="text-red-500 px-1 ">❤</span> by <span className=" pl-1">{meta.author.name}</span>
             </div>
             <div className="flex justify-end gap-4 items-center">
                 <IconButton
@@ -30,6 +30,14 @@ function Footer() {
                     size="icon"
                     className="p-0 border-none bg-transparent flex items-center justify-center"
                     aria-label="LinkedIn Profile"
+                />
+                <IconButton
+                    iconSrc={"icons/mail.svg"}
+                    href="mailto:me@jacobdev.dk"  // Replace with your actual email address
+                    variant="outline"
+                    size="icon"
+                    className="p-0 border-none bg-transparent flex items-center justify-center"
+                    aria-label="Email Address"
                 />
             </div>
         </footer>

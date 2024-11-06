@@ -6,6 +6,7 @@ import styles from './style.module.scss';
 import { Container } from '@/components/ui/container';
 import IconButton from "@/components/icons/iconButton";
 import * as React from "react";
+import { Mail } from 'lucide-react';
 
 const Header = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -38,6 +39,14 @@ const Header = () => {
                       size="icon"
                       className="p-0 border-none bg-transparent flex items-center justify-center"
                       aria-label="GitHub Profile"
+                  />
+                  <IconButton
+                      iconSrc={"icons/mail.svg"}
+                      href="mailto:me@jacobdev.dk"  // Replace with your actual email address
+                      variant="outline"
+                      size="icon"
+                      className="p-0 border-none bg-transparent flex items-center justify-center"
+                      aria-label="Email Address"
                   />
                 </div>
               </div>
