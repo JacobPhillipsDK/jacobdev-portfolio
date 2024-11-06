@@ -4,6 +4,9 @@ import TextReveal from '@/components/motion/text-reveal';
 import React from 'react';
 import Line from '@/components/motion/line';
 
+import { Container } from '@/components/ui/container';
+
+
 export default function About() {
   // const { scrollYProgress } = useScroll();
   // const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
@@ -11,6 +14,7 @@ export default function About() {
   // todo: add ability for different variants of about page
 
   return (
+      <Container className="space-y-4">
     <main className="my-24 flex-1">
       <section
         className="relative flex min-h-[calc(50dvh)] items-center justify-center"
@@ -59,5 +63,6 @@ export default function About() {
       {/*  /!*</motion.div>*!/*/}
       {/*</section>*/}
     </main>
+        </Container>
   );
 }
