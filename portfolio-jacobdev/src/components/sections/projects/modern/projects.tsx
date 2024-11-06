@@ -14,8 +14,6 @@ import {
 import Reveal from '@/components/reveal';
 import { project } from '@/app/source';
 
-import { NeonGradientCard } from "@/components/ui/neon-gradient-card";
-
 function Projects() {
   const projects = [...project.getPages()].sort(
     (a, b) =>
@@ -64,7 +62,7 @@ function Projects() {
                         href={project.url}
                         description={project.data.description}
                         tags={project.data.tags}
-                        thumbnail={`/images/projects/${project.slugs[0]}/cover.jpg`}
+                        thumbnail={project.data.thumbnail}
                       />
                     </div>
                   </CarouselItem>

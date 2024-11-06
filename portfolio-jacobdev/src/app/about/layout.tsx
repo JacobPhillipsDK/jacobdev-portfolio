@@ -33,7 +33,6 @@ const jsonLd: WithContext<AboutPage> = {
     name: meta.author.name,
     description: meta.site.description,
     url: meta.site.url,
-    sameAs: contact.socials.map((social) => social.href)
   }
 };
 

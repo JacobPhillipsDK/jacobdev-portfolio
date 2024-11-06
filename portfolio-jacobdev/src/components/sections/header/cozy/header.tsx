@@ -6,6 +6,10 @@ import styles from './style.module.scss';
 import Nav from './nav';
 import ModeToggle from '@/components/mode-toggle';
 import { Container } from '@/components/ui/container';
+import {Button} from "@/components/ui/button";
+import {Moon, Sun} from "lucide-react";
+import IconButton from "@/components/icons/iconButton";
+import * as React from "react";
 
 const Header = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -21,7 +25,25 @@ const Header = () => {
             </Link>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <ModeToggle />
+                {/*<ModeToggle />*/}
+                <div className="flex items-center space-x-2">
+                  <IconButton
+                      iconSrc={"/icons/github-mark-white.svg"}
+                      href="https://github.com/JacobPhillipsDK"
+                      variant="outline"
+                      size="icon"
+                      className="p-0 border-none bg-transparent flex items-center justify-center"
+                      aria-label="GitHub Profile"
+                  />
+                  <IconButton
+                      iconSrc={'icons/linkedin-white.svg'}
+                      href="https://www.linkedin.com/in/jacobphillips-dk/"
+                      variant="outline"
+                      size="icon"
+                      className="p-0 border-none bg-transparent flex items-center justify-center"
+                      aria-label="GitHub Profile"
+                  />
+                </div>
               </div>
               <div onClick={() => setIsActive(!isActive)} className={styles.el}>
                 <div className={styles.label}>
@@ -32,7 +54,7 @@ const Header = () => {
             </div>
           </div>
         </Container>
-        {isActive && <Nav setIsActive={setIsActive} />}
+        {isActive && <Nav setIsActive={setIsActive}/>}
       </header>
   );
 };

@@ -25,7 +25,7 @@ const experiences: Experience[] = [
     skills: ["Python", "C++", "Javascript", "App Script", "Linux", "FastAPI", "Mender", "Raspberry Pi", "Linux Kernel", "Git", "Linux Network", "Scrum"],
   },
   {
-    company: "KMD ",
+    company: "KMD - Clubtimiser",
     role: "Student Assistant",
     homePage_link: "https://kmd.dk",
     period: "September 2022 - February 2023",
@@ -49,8 +49,13 @@ function ExperienceCard({ experience }: { experience: Experience }) {
                   <Calendar className="w-4 h-4" />
                   <span>{experience.period}</span>
                   <SquareArrowOutUpRight  className="w-4 h-4"/>
-                  <Link className="underline" href={experience.homePage_link} target="_blank" rel="noopener noreferrer">
-                    {experience.homePage_link.replace(/^https?:\/\//, '')}
+                  <Link
+                      className="underline"
+                      href={experience.homePage_link ? experience.homePage_link : '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                  >
+                    {experience.homePage_link?.replace(/^https?:\/\//, '')}
                   </Link>
                 </div>
               </div>

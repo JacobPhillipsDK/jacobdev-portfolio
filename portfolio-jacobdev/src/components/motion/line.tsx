@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
 interface MouseEvent {
@@ -8,9 +8,9 @@ interface MouseEvent {
 }
 
 export default function Line({
-  className,
-  borderColor
-}: {
+                               className,
+                               borderColor
+                             }: {
   className?: string;
   borderColor?: string;
 }) {
@@ -21,19 +21,19 @@ export default function Line({
   let time = Math.PI / 2;
   let reqId: number | null = null;
 
-  useEffect(() => {
-    setPath(progress);
-  }, []);
-
-  const setPath = (progress: number) => {
+  const setPath = useCallback((progress: number) => {
     const width = window.innerWidth * 1;
 
     path.current?.setAttributeNS(
-      null,
-      'd',
-      `M0 250 Q${width * x} ${250 + progress}, ${width} 250`
+        null,
+        'd',
+        `M0 250 Q${width * x} ${250 + progress}, ${width} 250`
     );
-  };
+  }, [x]);
+
+  useEffect(() => {
+    setPath(progress);
+  }, [progress, setPath]);
 
   const lerp = (x: number, y: number, a: number) => x * (1 - a) + y * a;
 
@@ -79,28 +79,28 @@ export default function Line({
   };
 
   return (
-    <div className={cn('relative h-px w-full', className)}>
-      <div
-        onMouseEnter={() => {
-          manageMouseEnter();
-        }}
-        onMouseMove={(e) => {
-          manageMouseMove(e);
-        }}
-        onMouseLeave={() => {
-          manageMouseLeave();
-        }}
-        className="relative top-[-40px] z-10 h-10 w-full"
-      ></div>
-      <svg className="absolute top-[-250px] h-[500px] w-full">
-        <path
-          ref={path}
-          className={cn(
-            'fill-none stroke-current stroke-[1px] text-border',
-            borderColor
-          )}
-        ></path>
-      </svg>
-    </div>
+      <div className={cn('relative h-px w-full', className)}>
+        <div
+            onMouseEnter={() => {
+              manageMouseEnter();
+            }}
+            onMouseMove={(e) => {
+              manageMouseMove(e);
+            }}
+            onMouseLeave={() => {
+              manageMouseLeave();
+            }}
+            className="relative top-[-40px] z-10 h-10 w-full"
+        ></div>
+        <svg className="absolute top-[-250px] h-[500px] w-full">
+          <path
+              ref={path}
+              className={cn(
+                  'fill-none stroke-current stroke-[1px] text-border',
+                  borderColor
+              )}
+          ></path>
+        </svg>
+      </div>
   );
 }

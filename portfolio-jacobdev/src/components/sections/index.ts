@@ -1,6 +1,6 @@
 import Header from './header/cozy/header';
 import Hero from './hero/modern/hero';
-import About from './about/cozy/about';
+import About from './about//about';
 import Skills from './skills/cozy/skills';
 import Experience from './experience/experience';
 import Projects from './projects/modern/projects';
