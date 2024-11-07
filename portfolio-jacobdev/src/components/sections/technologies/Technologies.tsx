@@ -1,6 +1,7 @@
 'use client'
 
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import ClientSideSelect from './clientside';
@@ -78,6 +79,8 @@ const tabs = [
 ];
 
 export default function TechnologyTabs() {
+  const [mobileSelectedTab, setMobileSelectedTab] = useState<string>('mostused');
+
   return (
       <MotionWrap className="w-full py-16 lg:py-16" id="technologies">
         <div className="flex w-full flex-col items-center justify-center pb-5 text-center lg:flex-row lg:justify-between lg:text-left">
@@ -98,6 +101,8 @@ export default function TechnologyTabs() {
             most.
           </p>
         </div>
+
+        {/* Desktop Tab Component */}
         <div className="hidden lg:block">
           <Tabs defaultValue="mostused" className="w-full">
             <TabsList className="grid w-full grid-cols-2 text-sm sm:grid-cols-3 sm:text-base lg:grid-cols-5 lg:text-lg">
@@ -121,8 +126,12 @@ export default function TechnologyTabs() {
 
         {/* Mobile Select Dropdown */}
         <div className="lg:hidden">
-          <ClientSideSelect tabs={tabs} />
-          <TechnologyGrid tabId="mostused" />
+          <ClientSideSelect
+              tabs={tabs}
+              activeTab={mobileSelectedTab}
+              setActiveTab={setMobileSelectedTab}
+          />
+          <TechnologyGrid tabId={mobileSelectedTab} />
         </div>
 
         <div className="mt-4 flex items-center pb-6 lg:mt-6 lg:pb-8">
@@ -136,6 +145,8 @@ export default function TechnologyTabs() {
       </MotionWrap>
   );
 }
+
+
 
 interface TechnologyGridProps {
   tabId: string;
