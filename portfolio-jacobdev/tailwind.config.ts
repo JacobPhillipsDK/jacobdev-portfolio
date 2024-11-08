@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-const config = {
+const config: Config = {
 	darkMode: ['class'],
 	content: [
 		'./pages/**/*.{ts,tsx}',
@@ -11,19 +11,18 @@ const config = {
 	prefix: '',
 	theme: {
 		container: {
-			// @ts-ignore
-			center: 'true',
+			center: true,
 			padding: '2rem',
 			screens: {
 				'xl': '1280px',
 				'2xl': '1536px',
 				'3xl': '1920px',
-				'4xl': '2560px',     // Standard QHD
-				'5xl': '3440px',     // UltraWide QHD
-				'6xl': '3840px',     // 4K UHD
-				'7xl': '5120px',     // 5K resolution
-				'8xl': '7680px' ,    // 8K resolution
-				'custombreak': '1020px', // Custom breakpoint
+				'4xl': '2560px',
+				'5xl': '3440px',
+				'6xl': '3840px',
+				'7xl': '5120px',
+				'8xl': '7680px',
+				'custombreak': '1020px'
 			},
 		},
 		extend: {
@@ -67,57 +66,12 @@ const config = {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			keyframes: {
-				'accordion-down': {
-					from: { height: '0' },
-					to: { height: 'var(--radix-accordion-content-height)' }
-				},
-				'accordion-up': {
-					from: { height: 'var(--radix-accordion-content-height)' },
-					to: { height: '0' }
-				},
-				spotlight: {
-					'0%': {
-						opacity: '0',
-						transform: 'translate(-72%, -62%) scale(0.5)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translate(-50%,-40%) scale(1)'
-					}
-				},
-				meteor: {
-					'0%': {
-						transform: 'rotate(215deg) translateX(0)',
-						opacity: '1'
-					},
-					'70%': {
-						opacity: '1'
-					},
-					'100%': {
-						transform: 'rotate(215deg) translateX(-500px)',
-						opacity: '0'
-					}
-				},
-				'background-position-spin': {
-					'0%': {
-						backgroundPosition: 'top center'
-					},
-					'100%': {
-						backgroundPosition: 'bottom center'
-					}
-				}
-			},
-			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
-				spotlight: 'spotlight 2s ease .75s 1 forwards',
-				meteor: 'meteor 5s linear infinite',
-				'background-position-spin': 'background-position-spin 3000ms infinite alternate'
-			}
-		}
+		},
 	},
-	plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')]
-} satisfies Config;
+	variants: {
+		extend: {}
+	},
+	plugins: [require('@tailwindcss/typography')], // Add the typography plugin here
+};
 
 export default config;

@@ -1,28 +1,30 @@
-import type { Metadata } from 'next';
-import { MDXContent } from '@content-collections/mdx/react';
-import { notFound } from 'next/navigation';
-import { project } from '@/app/source';
-import { Container } from '@/components/ui/container';
+import type {Metadata} from 'next';
+import {MDXContent} from '@content-collections/mdx/react';
+import {notFound} from 'next/navigation';
+import {project} from '@/app/source';
+import {Container} from '@/components/ui/container';
 import Header from './header';
 import Image from 'next/image';
-import { createMetadata } from '@/lib/metadata';
-import { metadata as meta } from '@/app/config';
-import { Heading, headingTypes, MDXLink } from '@/lib/mdx/default-components';
-import { cn } from '@/lib/utils';
-import { HTMLAttributes } from 'react';
+import {createMetadata} from '@/lib/metadata';
+import {metadata as meta} from '@/app/config';
+import {Heading, headingTypes, MDXLink} from '@/lib/mdx/default-components';
+import {cn} from '@/lib/utils';
+import {HTMLAttributes} from 'react';
+
+
 
 export async function generateStaticParams({
                                                params
                                            }: {
     params: { slug: string };
 }) {
-    const { slug } = params;
+    const {slug} = params;
     // @ts-ignore
     return project.generateParams([slug]);
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-    const { slug } = params;
+export function generateMetadata({params}: { params: { slug: string } }) {
+    const {slug} = params;
     const page = project.getPage([slug]);
     if (!page) notFound();
 
@@ -60,70 +62,59 @@ export default async function ProjectPage({
                                           }: {
     params: { slug: string };
 }) {
-    const { slug } = params;
+    const {slug} = params;
     const page = project.getPage([slug]);
     if (!page) notFound();
 
     const {
-        data: { toc, body, structuredData }
+        data: {toc, body, structuredData}
     } = page;
 
     return (
         <Container className="space-y-4">
-            <main className="my-14 flex-1">
-                <div className="container mx-auto">
-                    <Header metadata={page.data} />
-                    <Image
-                        src={page.data.thumbnail ?? '/placeholder.png'}
-                        width={800}
-                        height={400}
-                        alt={`Banner image for ${page.data.title}`}
-                        className="my-12 aspect-video h-auto w-full rounded-lg object-cover"
-                    />
-                    <div className="prose min-w-full dark:prose-invert">
-                        <MDXContent
-                            code={body}
-                            components={{
-                                a: MDXLink,
-                                img: ({ src, alt, ...props }) => {
-                                    if (typeof src !== 'string') {
-                                        return null; // or a placeholder image
-                                    }
-                                    return (
-                                        <img
-                                            src={src}
-                                            alt={alt || `Image in ${page.data.title}`}
-                                            width={800}
-                                            height={600}
-                                            className="rounded-xl"
-                                            {...props}
-                                        />
-                                    );
-                                },
-                                ...Object.fromEntries(
-                                    headingTypes.map((type) => [
-                                        type,
-                                        (props: HTMLAttributes<HTMLHeadingElement>) => (
-                                            <Heading as={type} {...props} />
-                                        )
-                                    ])
-                                ),
-                                pre: ({ className, style: _style, ...props }) => (
-                                    <pre
-                                        className={cn(
-                                            'max-h-[500px] overflow-auto rounded-lg border border-neutral-800 bg-neutral-900 p-2 text-sm',
-                                            className
-                                        )}
-                                        {...props}
-                                    >
+            <div className="pt-24"></div>
+            <Header metadata={page.data}/>
+            <div className="px-[20px]">
+                <div className="prose min-w-full dark:prose-invert content-center">
+                    <MDXContent
+                        code={body}
+                        components={{
+                            a: MDXLink,
+                            ...Object.fromEntries(
+                                headingTypes.map((type) => [
+                                    type,
+                                    (props: HTMLAttributes<HTMLHeadingElement>) => (
+                                        <Heading as={type} {...props} />
+                                    )
+                                ])
+                            ),
+                            pre: ({className, style: _style, ...props}) => (
+                                <pre
+                                    className={cn(
+                                        'max-h-[500px] overflow-auto rounded-lg border border-neutral-800 bg-neutral-900 p-2 text-sm',
+                                        className
+                                    )}
+                                    {...props}
+                                >
                     {props.children}
                   </pre>
-                                )
-                            }}
+                            )
+                        }}
+                    />
+
+                    <div className="flex justify-center items-center my-12">
+                        <Image
+                            src={page.data.thumbnail ?? '/placeholder.png'}
+                            width={900}
+                            height={400}
+                            alt={`Banner image for ${page.data.title}`}
+                            className="w-full h-auto rounded-lg object-cover cursor-pointer"
                         />
                     </div>
+
+
                 </div>
-            </main>
+            </div>
         </Container>
     );
 }

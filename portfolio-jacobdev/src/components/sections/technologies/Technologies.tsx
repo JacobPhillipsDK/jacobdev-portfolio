@@ -12,7 +12,7 @@ import {
   SiDjango, SiMongodb, SiPostgresql, SiNginx,
   SiPython, SiJavascript, SiTypescript, SiCplusplus,
   SiTensorflow, SiPytorch, SiScikitlearn, SiPandas, SiDocker,
-  SiGit, SiJenkins, SiRust, SiLinux, SiFedora
+  SiGit, SiJenkins, SiRust, SiLinux, SiFedora, SiLatex
 } from '@icons-pack/react-simple-icons';
 
 import SiJava from  "@/components/sections/technologies/CustomIcons/SiJava";
@@ -67,6 +67,7 @@ const technologies: Technology[] = [
   {name:'C#', icon:SiCsharp, tab:'languages'},
   {name:'Linux', icon:SiLinux, tab:'devops'},
   {name:'Fedora', icon:SiFedora, tab:'devops'},
+  {name:'LaTeX', icon:SiLatex, tab:'devops'},
 
 ];
 

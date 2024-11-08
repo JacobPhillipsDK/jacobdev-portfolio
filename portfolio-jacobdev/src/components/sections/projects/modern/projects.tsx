@@ -52,20 +52,20 @@ function Projects() {
             >
               <CarouselContent>
                 {projects.map((project, index) => (
-                  <CarouselItem
-                    key={`project_${index}`}
-                    className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-                  >
+                    <CarouselItem
+                        key={`project_${index}`}
+                        className="sm:m-2 md:m-4 lg:m-6 xl:m-8 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                    >
                     <div className="h-full">
-                      <ProjectCard
-                        title={project.data.title}
-                        href={project.url}
-                        description={project.data.description}
-                        tags={project.data.tags}
-                        thumbnail={project.data.thumbnail}
-                      />
-                    </div>
-                  </CarouselItem>
+                        <ProjectCard
+                            title={project.data.title}
+                            href={project.url}
+                            description={project.data.description}
+                            tags={project.data.tags}
+                            thumbnail={project.data.thumbnail}
+                        />
+                      </div>
+                    </CarouselItem>
                 ))}
               </CarouselContent>
               <CarouselPrevious />

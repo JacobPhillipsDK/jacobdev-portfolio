@@ -59,17 +59,8 @@ export default function ProjectsPage(): React.ReactElement {
 
           <Line className={'mt-16'} />
         </div>
-        {/*<motion.div*/}
-        {/*  className="absolute bottom-8 left-1/2 -translate-x-1/2 transform"*/}
-        {/*  style={{ opacity }}*/}
-        {/*  animate={{ y: [0, 10, 0] }}*/}
-        {/*  transition={{ duration: 1.5, repeat: Infinity }}*/}
-        {/*>*/}
-        {/*  <ChevronDown className="h-8 w-8" />*/}
-        {/*</motion.div>*/}
       </section>
-      {/*className="container max-sm:px-0 md:py-12"*/}
-      <section className="grid w-full grid-cols-1 gap-4 p-4 md:grid-cols-2 2xl:grid-cols-3">
+      <section className="grid w-full grid-cols-1 gap-5 p-4 md:grid-cols-2 2xl:grid-cols-3">
         {projects.map((project, index) => (
           <ProjectCard
             title={project.data.title}

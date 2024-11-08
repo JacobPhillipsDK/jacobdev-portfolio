@@ -38,7 +38,8 @@ function ProjectCard({
   return (
     <Card
       className={cn(
-        'relative flex h-full flex-col justify-between border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900',
+        'relative flex h-full flex-col justify-between border border-zinc-50/10 bg-zinc-900',
+          'w-[20rem] max-h-[40rem]', // Adjust these classes to change the size
         className
       )}
     >
@@ -48,7 +49,7 @@ function ProjectCard({
             {thumbnail ? (
                 <Image
                     src={thumbnail}
-                    width={300}
+                    width={400}
                     height={200}
                     alt={`Image of ${title}`}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-105"

@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-        <body className={bricolage_grotesque.className}>
+        <body className={`${bricolage_grotesque.className} bg-background text-foreground`}>
         <Providers>
             <div className="relative min-h-screen bg-background">
                 {children}

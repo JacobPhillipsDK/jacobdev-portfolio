@@ -4,5 +4,7 @@ export interface Project {
   website?: string;
   github?: string;
   thumbnail?: string;
+  showDemo?: boolean;
+  showGithub?: boolean;
   tags?: Array<{ label: string }>;
 }
