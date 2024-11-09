@@ -8,6 +8,8 @@ import Providers from '@/app/providers';
 import {createMetadata} from '@/lib/metadata';
 import {Footer} from '@/components/sections';
 
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 const bricolage_grotesque = Bricolage_Grotesque({subsets: ['latin']});
 
 export const metadata = createMetadata({
@@ -38,6 +40,7 @@ export default function RootLayout({
             <Footer/>
         </Providers>
         </body>
+        <GoogleAnalytics gaId="G-WVT3P9L2YR" />
         </html>
     );
 }
