@@ -10,7 +10,7 @@ export default function NotFound() {
             <div className="w-full space-y-6 text-center">
                 <div className="space-y-3">
                     <h2 className="hero glitch layers" data-text="404 ERROR"><span>404 ERROR</span></h2>
-                    <p className="text-3xl text-gray-500">Looks like you've ventured into the unknown digital realm.</p>
+                    <p className="text-3xl text-gray-500">Looks like you&apos;ve ventured into the unknown digital realm.</p>
                 </div>
                 <Link
                     href="/"
