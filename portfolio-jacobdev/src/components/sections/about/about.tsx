@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowUpRightIcon } from 'lucide-react';
 import TextReveal from '@/components/motion/text-reveal';
-
+import DownloadButton from '@/components/DownloadFileBasedOnLocation'
 import {
     Card,
     CardContent,
@@ -58,11 +58,7 @@ function About() {
                 </CardContent>
                 <CardFooter>
                     <div className="flex gap-2">
-                        <Button asChild variant={'outline'}>
-                            <a href="resume.pdf" target="_blank">
-                                View Resume <ArrowUpRightIcon className="ml-2 size-5"/>
-                            </a>
-                        </Button>
+                        <DownloadButton buttonText="View Resume" />
                         <Button asChild>
                             <Link href="/about">Learn More</Link>
                         </Button>
