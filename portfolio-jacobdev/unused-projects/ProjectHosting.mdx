@@ -1,0 +1,49 @@
+---
+title: How I do Hosting for My Portfolio
+description:  How I host my portfolio website on Hetzner Cloud using Docker, Nginx, and Cloudflare for high performance, scalability, and security.
+date: 2024-11-10
+website: https://jacobdev.dk
+github: https://github.com/JacobPhillipsDK/jacobdev-portfolio
+thumbnail: /images/projects/hosting.png
+showDemo: false
+showGithub: false
+tags:
+  - label: Fedora Linux Server
+  - label: Docker
+  - label: Docker Container
+  - label: Cloudflare DNS
+  - label: Nginx
+  - label: Docker Compose
+  - label: Hetzner Cloud
+  - label: Reverse Proxy
+  - label: SSL Encryption
+  - label: Full-Stack Web Development
+  - label: Portfolio Hosting
+---
+
+## Hosting Setup
+
+My portfolio is hosted on **Hetzner Cloud**, a reliable and cost-effective cloud hosting provider. I use Docker to manage the different components of my portfolio application, ensuring portability and ease of deployment across environments.
+
+### Infrastructure Overview
+
+1. **Hetzner Cloud**: The main server is provisioned on Hetzner’s cloud platform. It's a scalable and efficient solution that allows me to host my portfolio with high availability.
+
+2. **Docker**: I use Docker to containerize my portfolio project. This ensures that the application runs consistently across different environments and simplifies the deployment process.
+
+3. **Nginx**: On top of Docker, I use **Nginx** as a reverse proxy to manage routing and serve the portfolio. Nginx handles the traffic to the Docker containers and enables secure, optimized connections for my website. By running Nginx outside of Docker, I can efficiently manage traffic routing for multiple subdomains and Docker containers.
+
+4. **SSL with Cloudflare**: My domain, `jacobdev.dk`, is managed through **Cloudflare**. It provides DNS management, as well as SSL for secure HTTPS access. Cloudflare helps ensure that my website is fast, secure, and resilient to attacks.
+
+5. **Docker Compose**: For orchestration, I use **Docker Compose** to define and run multi-container Docker applications. This allows me to easily manage my services, including Nginx, my portfolio app, and any databases or additional services needed.
+
+### How It Works
+
+- When you visit [jacobdev.dk](https://jacobdev.dk), Nginx running on the server handles the request and forwards it to the React application running in a Docker container.
+- The React app is built with Next.js, serving both static content and server-side rendered pages.
+- Nginx also manages routing for other subdomains, ensuring that different applications can run on isolated containers but still be accessible under different URLs.
+
+This setup ensures high performance, scalability, and flexibility for my portfolio, making it easy to update and deploy new features as I continue to evolve the website.
+project combines data scraping with real-time analytics.
+
+![Hosting Setup Diagram](/images/projects/hosting.png)

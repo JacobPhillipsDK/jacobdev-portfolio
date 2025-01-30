@@ -1,0 +1,29 @@
+.cursor {
+  opacity: 0;
+  z-index: 9999;
+  position: fixed;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: difference;
+
+  /* keep one background-color only */
+  background-color: white; /* or hsl(var(--foreground)) if preferred */
+
+  /* smoother animation when size changes on press */
+  transition: opacity 0.3s ease-in-out, width 120ms ease, height 120ms ease;
+
+  /* perf hint since we only transform/resize */
+  will-change: transform, width, height;
+
+  &.hidden { opacity: 0; }
+  &.visible { opacity: 1; }
+}
+
+/* optional: respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    transition: opacity 0.2s linear;
+  }
+}
