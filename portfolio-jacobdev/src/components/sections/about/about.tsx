@@ -50,18 +50,16 @@ function About() {
                 <p className="text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4">
                     <TextReveal>
                         I love working on web applications, automation, and network solutions.<br/>
-                        In my free time, I enjoy building Raspberry Pi projects, solving LeetCode challenges, and
-                        working on
-                        personal projects.
+                        In my free time, I enjoy building Raspberry Pi projects, working on my homelab.
                         </TextReveal>
                     </p>
                 </CardContent>
                 <CardFooter>
                     <div className="flex gap-2">
                         <DownloadButton buttonText="View Resume" />
-                        <Button asChild>
-                            <Link href="/about">Learn More</Link>
-                        </Button>
+                        {/*<Button asChild>*/}
+                        {/*    <Link href="/about">Learn More</Link>*/}
+                        {/*</Button>*/}
                     </div>
                 </CardFooter>
             </Card>

@@ -58,15 +58,15 @@ const experiences: Education[] = [
     ],
     thesis: "In my bachelor thesis, titled Comfortable Hand Gestures for Movement in Virtual Reality, I conducted a hand-gesture elicitation study to identify suitable gestures for locomotion control within a virtual reality environment. This project aimed to improve VR movement gestures, specifically continuous and teleportation gestures, using an elicitation-based approach.\n" +
         "Key research areas included defining gesture types, applying Wobbrok's study method with Morris' modifications, and minimizing legacy bias in user-generated gestures." +
-        " The study involved 30 participants in both the elicitation study and a post-test, utilizing a logging system and NASA-TLX survey to assess task load.\n" +
-        " The results indicated that gestures derived from the elicitation study had a lower task load index than industry-standard gestures, leading to discussions on the optimal number of gestures before quality declines. Additionally, I implemented software that could recognize these gestures in real-time within the virtual reality environment.",
+        "The study involved 30 participants in both the elicitation study and a post-test, utilizing a logging system and NASA-TLX survey to assess task load.\n" +
+        "The results indicated that gestures derived from the elicitation study had a lower task load index than industry-standard gestures, leading to discussions on the optimal number of gestures before quality declines. Additionally, I implemented software that could recognize these gestures in real-time within the virtual reality environment.",
   },
 ]
 
 function ExperienceCard({ experience }: { experience: Education }) {
   return (
       <div className="relative">
-        <Card className="relative z-10 transition-colors duration-300 hover:bg-muted/50">
+        <Card className="relative z-10 transition-colors duration-300 hover:bg-muted/80">
           <CardContent className="p-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="space-y-1">

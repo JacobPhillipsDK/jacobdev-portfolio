@@ -38,7 +38,7 @@ interface Technology {
 
 const technologies: Technology[] = [
   { name: 'React', icon: SiReact, tab: 'webdev', mostused: true },
-  { name: 'Next.js', icon: SiNextdotjs, tab: 'webdev', mostused: true },
+  { name: 'Next.js', icon: SiNextdotjs, tab: 'webdev', mostused: true,learning:true },
   { name: 'Tailwind CSS', icon: SiTailwindcss, tab: 'webdev', mostused: true },
   { name: 'Node.js', icon: SiNodedotjs, tab: 'webdev', mostused: true },
   { name: 'Django', icon: SiDjango, tab: 'webdev' },

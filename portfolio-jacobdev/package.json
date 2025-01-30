@@ -1,9 +1,9 @@
 {
-  "name": "shadcn-portfolio",
+  "name": "jacob-phillips-portfolio",
   "version": "0.9.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -18,8 +18,8 @@
     "@marsidev/react-turnstile": "^1.0.2",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@next/mdx": "^14.2.3",
-    "@next/third-parties": "^15.0.3",
+    "@next/mdx": "15.1.6",
+    "@next/third-parties": "15.1.6",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
     "@radix-ui/react-avatar": "^1.1.1",
@@ -49,12 +49,12 @@
     "lenis": "^1.0.45",
     "lucide-react": "^0.363.0",
     "nanoid": "^3.3.8",
-    "next": "^14.2.15",
+    "next": "15.1.6",
     "next-safe-action": "^7.9.3",
     "next-themes": "^0.3.0",
     "next-transition-router": "^0.2.1",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-hook-form": "^7.52.2",
     "react-markdown": "^9.0.1",
     "rehype-sanitize": "^6.0.0",
@@ -80,11 +80,11 @@
     "@eslint/js": "^9.13.0",
     "@fumadocs/content-collections": "^1.1.4",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
     "autoprefixer": "^10.0.1",
     "eslint": "^8.57.0",
-    "eslint-config-next": "14.1.4",
+    "eslint-config-next": "15.1.6",
     "eslint-plugin-react": "^7.37.2",
     "fumadocs-core": "^13.4.10",
     "globals": "^15.11.0",
@@ -103,5 +103,9 @@
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx,json}": "eslint --fix",
     "**/*": "prettier --write --ignore-unknown"
   },
-  "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf"
+  "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf",
+  "overrides": {
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3"
+  }
 }
