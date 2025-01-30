@@ -11,8 +11,6 @@ export default function About() {
   // const { scrollYProgress } = useScroll();
   // const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
-  // todo: add ability for different variants of about page
-
   return (
       <Container className="space-y-4">
     <main className="my-24 flex-1">
