@@ -9,19 +9,21 @@ on:
 
 permissions:
   contents: read
-
-env:
-  DEPLOY_WEBHOOK_URL: https://deploy.jacobdev.dk/deploy
+  id-token: write # Best practice for workflows authenticating to external services
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_WEBHOOK_URL: https://deploy.jacobdev.dk/deploy
+
     steps:
       - name: Checkout (for metadata only)
         uses: actions/checkout@v4
 
       - name: Build JSON payload
         id: payload
+        shell: bash
         run: |
           TS=$(date +%s)
           REF="${{ github.event.inputs.ref || github.ref_name }}"
@@ -33,10 +35,12 @@ jobs:
           echo "ts=$TS" >> $GITHUB_OUTPUT
 
       - name: Install cryptography
+        shell: bash
         run: |
-            python -m pip install --upgrade pip cryptography
+          python -m pip install --upgrade pip cryptography
 
-      - name: Write OpenSSH private key (from Secrets, no heredoc)
+      - name: Write OpenSSH private key
+        shell: bash
         env:
           KEY: ${{ secrets.DEPLOY_ED25519_PRIVATE }}
         run: |
@@ -45,33 +49,34 @@ jobs:
 
       - name: Sign payload with Ed25519 (Python cryptography)
         id: sign
+        shell: bash
         env:
           PASSPHRASE: ${{ secrets.DEPLOY_ED25519_PASSPHRASE }}
         run: |
           python - <<'PY'
-import os, base64
-from pathlib import Path
-from cryptography.hazmat.primitives import serialization
-# Build exact payload: "<ts>.<raw_json>"
-ts   = Path('ts.txt').read_text().strip().encode()
-body = Path('body.json').read_bytes()
-payload = ts + b'.' + body
-# Load OpenSSH private key (+ passphrase if set)
-key_data = Path('sk_ssh').read_bytes()
-password = os.environ.get('PASSPHRASE')
-sk = serialization.load_ssh_private_key(key_data, password=password.encode() if password else None)
-sig = sk.sign(payload)
-Path('sig.b64').write_text(base64.b64encode(sig).decode())
-PY
+          import os, base64
+          from pathlib import Path
+          from cryptography.hazmat.primitives import serialization
+          # Build exact payload: "<ts>.<raw_json>"
+          ts   = Path('ts.txt').read_text().strip().encode()
+          body = Path('body.json').read_bytes()
+          payload = ts + b'.' + body
+          # Load OpenSSH private key (+ passphrase if set)
+          key_data = Path('sk_ssh').read_bytes()
+          password = os.environ.get('PASSPHRASE')
+          sk = serialization.load_ssh_private_key(key_data, password=password.encode() if password else None)
+          sig = sk.sign(payload)
+          Path('sig.b64').write_text(base64.b64encode(sig).decode())
+          PY
           echo "sig=$(cat sig.b64)" >> $GITHUB_OUTPUT
 
       - name: Call deploy endpoint (signed)
+        shell: bash
         env:
           TS:  ${{ steps.payload.outputs.ts }}
           SIG: ${{ steps.sign.outputs.sig }}
-          URL: ${{ env.DEPLOY_WEBHOOK_URL }}
         run: |
-          curl -fsS -X POST "$URL" \
+          curl -fsS -X POST "$DEPLOY_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -H "X-Signature-Timestamp: $TS" \
             -H "X-Signature-Ed25519: $SIG" \
@@ -79,4 +84,5 @@ PY
             | tee response.json
 
       - name: Print queued job id (nice to have)
+        shell: bash
         run: jq -r '.job // "no-job-id-returned"' response.json
