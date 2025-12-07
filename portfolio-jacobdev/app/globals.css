@@ -1,8 +1,22 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 
+@plugin "@tailwindcss/typography";
+
+
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+  @keyframes halo-random {
+    0%   { transform: scale(var(--halo-scale-min, 0.95)); opacity: var(--halo-opacity-min, 0.25); }
+    50%  { transform: scale(var(--halo-scale-max, 1.15)); opacity: var(--halo-opacity-max, 0.45); }
+    100% { transform: scale(var(--halo-scale-min, 0.95)); opacity: var(--halo-opacity-min, 0.25); }
+  }
+
+  --animate-halo-random: halo-random var(--halo-duration, 2s) ease-in-out infinite alternate;
+}
+
+
 
 @theme inline {
   --color-background: var(--background);

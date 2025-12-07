@@ -30,6 +30,14 @@ const Header: React.FC = () => {
             </span>
           </Link>
 
+            <div>
+                 <Link href="/blog" className="flex items-center justify-center">
+            <span className="text-md font-semibold transition-transform hover:translate-x-1 hover:translate-y-1">
+              MY BLOG
+            </span>
+          </Link>
+            </div>
+
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               {/* <ModeToggle /> */}

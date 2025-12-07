@@ -1,86 +1,103 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-import { serialize } from "next-mdx-remote/serialize";
+// lib/projects.ts
+import "server-only";
+import { fetchList } from "@/lib/payload"; // <-- from the refactor we made
 
-import remarkGfm from "remark-gfm";
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypePrettyCode from "rehype-pretty-code";
-
-
-const PROJECTS_PATH = path.join(process.cwd(), "projectContent");
-
-function slugify(filename: string) {
-  // remove extension
-  const name = filename.replace(/\.[mM][dD]x?$/, "");
-  return name
-    .toLowerCase()
-    .replace(/\s+/g, "-")                // spaces -> -
-    .replace(/[^a-z0-9\-]+/g, "-")      // non-alnum -> -
-    .replace(/-+/g, "-")               // collapse dashes
-    .replace(/^-+|-+$/g, "");         // trim dashes
-}
-
-export function getProjectFilenames(): string[] {
-  return fs
-    .readdirSync(PROJECTS_PATH)
-    .filter((f) => /\.[mM][dD]x?$/.test(f));
-}
-
-export function getProjectSlugs(): string[] {
-  return getProjectFilenames().map((f) => slugify(f));
-}
-
-export interface ProjectFrontMatter {
+export type ProjectSummary = {
+  id: number | string;
   title?: string;
+  slug?: string;
   description?: string;
-  tags?: Array<string | { label: string }>;
-  thumbnail?: string;
-  [key: string]: unknown;
-}
+  date?: string;
+  tags?: Array<{ label?: string } | string>;
+  thumbnail?: any;
+  thumbnailURL?: string;
+  __thumbPath?: string | null;
+  __thumbSize?: { w: number; h: number } | null;
+};
 
-export function getAllProjectsMeta(): Array<{ slug: string; frontMatter: ProjectFrontMatter }> {
-  return getProjectFilenames().map((filename) => {
-    const slug = slugify(filename);
-    const raw = fs.readFileSync(path.join(PROJECTS_PATH, filename), "utf8");
-    const { data } = matter(raw);
-    return { slug, frontMatter: data as ProjectFrontMatter };
-  });
-}
-
-function findFilenameForSlug(slug: string): string | null {
-  const files = getProjectFilenames();
-  for (const f of files) {
-    if (slugify(f) === slug) return f;
+function getPayloadOrigin(): string {
+  const raw = process.env.PAYLOAD_API_URL ?? process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  if (!raw) return "";
+  try {
+    const u = new URL(raw);
+    return u.origin; // protocol + host + optional port
+  } catch {
+    // fallback: strip trailing /api if present
+    return raw.replace(/\/api\/?$/, "");
   }
-  return null;
 }
 
-export async function getProjectBySlug(slug: string) {
-  const filename = findFilenameForSlug(slug);
-  if (!filename) {
-    throw new Error(`Project not found for slug: ${slug}`);
-  }
-  const fullPath = path.join(PROJECTS_PATH, filename);
-  const raw = fs.readFileSync(fullPath, "utf8");
-  const { content, data } = matter(raw);
-  const mdxSource = await serialize(content, {
-    parseFrontmatter: true,
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: "wrap" }],
-        [
-          rehypePrettyCode,
-          {
-            keepBackground: false,
-            theme: { dark: "github-dark", light: "github-light" },
-          },
-        ],
-      ],
-    },
+function selectThumbnailCandidate(p: any): string | null {
+  const t = p?.thumbnail ?? {};
+  const sizes = t?.sizes ?? {};
+  const candidates = [
+    sizes?.thumbnail?.url,
+    sizes?.small?.url,
+    sizes?.medium?.url,
+    sizes?.square?.url,
+    t?.thumbnailURL,
+    t?.url,
+    p?.thumbnailURL,
+  ].filter(Boolean);
+  return candidates.length > 0 ? String(candidates[0]) : null;
+}
+
+function pickThumbnailSize(p: any) {
+  const t = p?.thumbnail ?? {};
+  const sizes = t?.sizes ?? {};
+  const pick = (s: any) => (s && s.width && s.height ? { w: s.width, h: s.height } : null);
+  return (
+    pick(sizes?.thumbnail) ??
+    pick(sizes?.small) ??
+    pick(sizes?.medium) ??
+    (t?.width && t?.height ? { w: t.width, h: t.height } : null)
+  );
+}
+
+/**
+ * Fetch all projects (paged up to 1000) and normalize thumbnails.
+ * Relies on lib/payload.ts for auth, caching, and errors.
+ */
+export async function getProjectsFromPayload(): Promise<ProjectSummary[]> {
+  // You can tweak these knobs as needed:
+  const depth = 2;               // include related media, etc.
+  const limit = 1000;            // pull “all” within reason
+  const sort = "-date";          // newest first (change to "date" for oldest first)
+
+  // If you need only published documents, add: whereEquals: { published: true }
+  const { docs } = await fetchList("Projects", {
+    depth,
+    limit,
+    sort,
+    // whereEquals: { published: true },
   });
-  return { mdxSource, frontMatter: data as ProjectFrontMatter };
+
+  const payloadOrigin = getPayloadOrigin();
+
+  const normalized: ProjectSummary[] = docs.map((p: any) => {
+    const proj: ProjectSummary = {
+      id: p.id,
+      title: p.title,
+      slug: p.slug,
+      description: p.description,
+      date: p.date,
+      tags: p.tags,
+      thumbnail: p.thumbnail,
+      thumbnailURL: p.thumbnailURL,
+      __thumbPath: null,
+      __thumbSize: null,
+    };
+
+    const candidate = selectThumbnailCandidate(p);
+    if (candidate) {
+      proj.__thumbPath = candidate.startsWith("/")
+        ? (payloadOrigin ? payloadOrigin + candidate : candidate)
+        : candidate; // absolute URL as-is
+    }
+    proj.__thumbSize = pickThumbnailSize(p) ?? null;
+
+    return proj;
+  });
+
+  return normalized;
 }

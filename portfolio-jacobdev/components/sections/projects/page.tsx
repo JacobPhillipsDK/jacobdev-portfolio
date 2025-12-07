@@ -1,38 +1,40 @@
 import React from 'react';
 import MotionWrap from '@/components/Motion/motionWrapper';
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious
-} from '@/components/ui/carousel';
-import ProjectCard from './projectCards';
 import Reveal from '@/components/reveal';
-import { getAllProjectsMeta, ProjectFrontMatter } from '@/lib/projects';
+import {getProjectsFromPayload} from "@/lib/projects";
+import MasonryGrid, {type ProjectLike as MasonryProject} from "@/components/Masonry/MasonryGrid";
+
+
+
+type ProjectSummary = {
+    id: number | string;
+    title?: string;
+    slug?: string;
+    description?: string;
+    date?: string;
+    tags?: Array<{ label?: string } | string>;
+    thumbnail?: any;
+    thumbnailURL?: string;
+    __thumbPath?: string | null;
+    __thumbSize?: { w: number; h: number } | null;
+};
+
 
 export default async function Projects() {
-    const meta: Array<{ slug: string; frontMatter: ProjectFrontMatter }> = getAllProjectsMeta();
+    const projects = await getProjectsFromPayload();
 
-    const projects = meta.map(({ slug, frontMatter }): {
-        url: string;
-        data: { title: string; description: string; tags: string[]; thumbnail: string };
-    } => {
-        // Cast tags to known union type and map to string labels
-        const tags = ((frontMatter.tags ?? []) as Array<string | { label: string }> )
-            .map(t => typeof t === 'string' ? t : t.label)
-            .filter(Boolean);
 
-        return {
-            url: `/projects/${slug}`,
-            data: {
-                title: frontMatter.title ?? slug,
-                description: frontMatter.description ?? '',
-                tags,
-                thumbnail: frontMatter.thumbnail ?? '/images/projects/default.png'
-            }
-        };
-    });
+    // Map to the MasonryGrid shape (uses `imageUrl`)
+    const masonryProjects: MasonryProject[] = projects.map((p: ProjectSummary) => ({
+        id: p.id,
+        title: p.title,
+        description: p.description,
+        tags: p.tags as any,
+        date: p.date,
+        slug: p.slug,
+        imageUrl: p.__thumbPath ?? null, // <- critical: what MasonryGrid consumes
+    }));
+
 
     return (
         <MotionWrap className="w-full pb-16 lg:pb-16" id="projects">
@@ -58,33 +60,11 @@ export default async function Projects() {
                 </div>
 
                 <div className="flex items-center justify-center overflow-hidden lg:px-12">
-                    <Carousel
-                        opts={{
-                            align: 'start'
-                        }}
-                        className="w-full"
-                    >
-                        <CarouselContent>
-                            {projects.map((project, index) => (
-                                <CarouselItem
-                                    key={`project_${index}`}
-                                    className="sm:m-2 md:m-4 lg:m-6 xl:m-8 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-                                >
-                                    <div className="h-full">
-                                        <ProjectCard
-                                            title={project.data.title}
-                                            href={project.url}
-                                            description={project.data.description}
-                                            tags={project.data.tags.map(tag => ({ label: tag }))}
-                                            thumbnail={project.data.thumbnail}
-                                        />
-                                    </div>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                        <CarouselPrevious />
-                        <CarouselNext />
-                    </Carousel>
+                    <MasonryGrid
+                        projects={masonryProjects}
+                        gutterPx={12}
+                    />
+
                 </div>
             </div>
         </MotionWrap>

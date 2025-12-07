@@ -1,114 +1,87 @@
-// portfolio-jacobdev/app/projects/[slug]/page.tsx
-import React from "react";
-import {getProjectBySlug/*, getProjectSlugs*/} from "@/lib/projects";
-import MDXClient from "../MDXClient";
-
+import {notFound} from "next/navigation";
+import {renderLexicalRoot} from "@/hooks/lexicalRenderer";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardFooter, CardContent,
 } from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
+import {fetchDoc, fetchList} from "@/lib/payload";
+import { Project } from "@/types/project";
+import Link from "next/link";
+import {Button} from "@/components/ui/button";
 import {ArrowUpRightIcon} from "lucide-react";
+import React from "react";
 
-export const dynamic = 'force-dynamic';
 
-// Static params disabled to avoid build-time MDX render issues.
-// export async function generateStaticParams() {
-//   const slugs = getProjectSlugs();
-//   return slugs.map((slug) => ({slug}));
-// }
 
-interface TagObject {
-  label: string;
-}
+export default async function ProjectSlugPage({params,}: { params: { slug: string } | Promise<{ slug: string }>; }) {
+    const {slug} = (await params) as { slug: string };
 
-type Tag = string | TagObject;
+    console.log("[page] params.slug:", slug);
+    const project = (await fetchDoc("Projects", slug, { depth: 2 })) as Project | null;
 
-interface ProjectFrontMatter {
-  title?: string;
-  description?: string;
-  website?: string;
-  github?: string;
-  showDemo?: boolean;
-  showGithub?: boolean;
-  tags?: Tag[];
-  date?: string;
-}
+    if (!project) {
+        // not found -> 404
+        notFound();
+    }
 
-interface PageProps { params: { slug: string } }
+    return (
+        <main className="p-6 max-w-4xl mx-auto">
 
-export default async function ProjectPage({params}: PageProps) {
-  const {slug} = params;
-  const {mdxSource, frontMatter} = await getProjectBySlug(slug);
+            <Card>
+                <CardHeader>
+                    <div className="flex-1">
+                        <CardTitle>{project.title}</CardTitle>
+                        {project.description && <CardDescription>{project.description}</CardDescription>}
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            {(project.tags || []).map((t: any, i: number) => (
+                                <Badge key={i}>{typeof t === "string" ? t : t.label ?? String(t)}</Badge>
+                            ))}
+                        </div>
+                    </div>
+                </CardHeader>
 
-  const {
-    title = "Untitled",
-    description = "",
-    website,
-    github,
-    showDemo = false,
-    showGithub = false,
-    tags = [],
-    date,
-  } = frontMatter as ProjectFrontMatter;
+                <CardContent className="flex flex-wrap gap-3">
+                    {
+                        project.showGithub && project.github &&
+                        <Button asChild variant="default">
+                            <Link href={project.github} target="_blank" rel="noopener noreferrer"
+                                  className="inline-block">Github <ArrowUpRightIcon className="ml-2 h-4 w-4"/></Link>
+                        </Button>
+                    }
 
-  const formattedDate = date ? new Date(date).toLocaleDateString() : null;
+                    {
+                        project.showDemo && project.website &&
+                        <Button asChild variant="default">
+                            <Link href={project.website} target="_blank" rel="noopener noreferrer"
+                                  className="inline-block">View Demo <ArrowUpRightIcon className="ml-2 h-4 w-4"/></Link>
+                        </Button>
+                    }
 
-  return (
-    <main className="space-y-8">
-      <header className="space-y-4">
-        <Card>
-          <CardHeader>
-            <div className="flex items-start gap-6">
-              <div className="flex-1">
-                <CardTitle className="text-xl">{title}</CardTitle>
-                {description && <CardDescription>{description}</CardDescription>}
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {Array.isArray(tags) &&
-                    tags.map((t: Tag, i: number) => (
-                      <Badge key={`tag-${i}`} variant="secondary">
-                        {typeof t === "string" ? t : t.label}
-                      </Badge>
-                    ))}
-                </div>
-              </div>
+                </CardContent>
+
+                <CardFooter className="flex flex-wrap gap-2">
+
+
+                    {project.date &&
+                        <time dateTime={project.date}
+                              className="text-sm text-muted-foreground">Posted {new Date(project.date).toLocaleDateString("da-DK")}</time>}
+
+                </CardFooter>
+            </Card>
+
+            <div className="space-y-6">
+
+                {project.content?.root ? (
+                    <div className="prose max-w-none">{renderLexicalRoot(project.content.root)}</div>
+                ) : (
+                    <p>No content available.</p>
+                )}
             </div>
-          </CardHeader>
 
-          <CardContent className="flex flex-wrap gap-3">
-            {website && showDemo ? (
-              <Button asChild variant="outline">
-                <a href={website} target="_blank" rel="noopener noreferrer">
-                  View Demo <ArrowUpRightIcon className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            ) : null}
-
-            {github && showGithub ? (
-              <Button asChild variant="default">
-                <a href={github} target="_blank" rel="noopener noreferrer">
-                  Github <ArrowUpRightIcon className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            ) : null}
-          </CardContent>
-
-          <CardFooter className="flex flex-wrap gap-2">
-            {formattedDate && (
-              <time dateTime={date} className="text-sm text-muted-foreground">
-                Posted {formattedDate}
-              </time>
-            )}
-          </CardFooter>
-        </Card>
-      </header>
-
-      <MDXClient mdxSource={mdxSource} />
-    </main>
-  );
+        </main>
+    );
 }
