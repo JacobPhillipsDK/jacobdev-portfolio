@@ -1,6 +1,6 @@
 "use client"
 
-import useMasonry from "@/components/Masonry/MasonryGrid"
+import {useMasonry} from "@/components/Masonry/MasonryGrid"
 
 export default function ProjectGrids() {
   const masonryContainer = useMasonry();

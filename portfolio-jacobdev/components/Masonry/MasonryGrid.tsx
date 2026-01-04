@@ -5,6 +5,55 @@ import {ExternalLink} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+// Hook for using masonry layout with a ref
+export function useMasonry(gutterPx: number = 16) {
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        let msnry: any;
+        let imgLoad: any;
+        let canceled = false;
+
+        (async () => {
+            try {
+                const Masonry = (await import("masonry-layout")).default;
+                const imagesLoaded = (await import("imagesloaded")).default;
+
+                if (!containerRef.current || canceled) return;
+
+                // Initialize Masonry
+                msnry = new Masonry(containerRef.current, {
+                    itemSelector: ".masonry-item",
+                    columnWidth: ".masonry-sizer",
+                    percentPosition: false,
+                    gutter: gutterPx,
+                    transitionDuration: "0.2s",
+                });
+
+                // Layout after each image loads
+                imgLoad = imagesLoaded(containerRef.current);
+                imgLoad.on("progress", () => msnry.layout());
+                imgLoad.on("always", () => msnry.layout());
+            } catch {
+                // no-op if the libs fail to load (SSR race, etc.)
+            }
+        })();
+
+        return () => {
+            canceled = true;
+            try {
+                imgLoad?.off?.("progress");
+                imgLoad?.off?.("always");
+                msnry?.destroy?.();
+            } catch {
+                /* noop */
+            }
+        };
+    }, [gutterPx]);
+
+    return containerRef;
+}
+
 export type ProjectLike = {
     id: string | number;
     title?: string;
@@ -32,49 +81,7 @@ export default function MasonryGrid({
                                         className,
                                         gutterPx = 16,
                                     }: MasonryGridProps) {
-    const containerRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        let msnry: any;
-        let imgLoad: any;
-        let canceled = false;
-
-        (async () => {
-            try {
-                const Masonry = (await import("masonry-layout")).default;
-                const imagesLoaded = (await import("imagesloaded")).default;
-
-                if (!containerRef.current || canceled) return;
-
-                // Initialize Masonry
-                msnry = new Masonry(containerRef.current, {
-                    itemSelector: ".masonry-item",
-                    columnWidth: ".masonry-sizer", // use the responsive sizer element
-                    percentPosition: false,
-                    gutter: gutterPx,
-                    transitionDuration: "0.2s",
-                });
-
-                // Layout after each image loads
-                imgLoad = imagesLoaded(containerRef.current);
-                imgLoad.on("progress", () => msnry.layout());
-                imgLoad.on("always", () => msnry.layout());
-            } catch {
-                // no-op if the libs fail to load (SSR race, etc.)
-            }
-        })();
-
-        return () => {
-            canceled = true;
-            try {
-                imgLoad?.off?.("progress");
-                imgLoad?.off?.("always");
-                msnry?.destroy?.();
-            } catch {
-                /* noop */
-            }
-        };
-    }, [projects, gutterPx]);
+    const containerRef = useMasonry(gutterPx);
 
     return (
         <div className={cn("w-full", className)}>

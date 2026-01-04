@@ -1,17 +1,11 @@
 import React from "react";
-import Link from "next/link";
 import {Container} from "@/components/cotainer";
-import {
-    Card,
-    CardContent,
-} from "@/components/ui/card";
-import {Badge} from "@/components/ui/badge";
 import {fetchList} from "@/lib/payload";
 import Reveal from "@/components/reveal";
-import Image from 'next/image'
 
 export default async function BlogPage() {
-    const {docs} = await fetchList("posts", {depth: 2, limit: 100, sort: "-date"});
+    // Fetch posts (currently not displayed)
+    await fetchList("posts", {depth: 2, limit: 100, sort: "-date"});
 
     return (
         <Container>
@@ -29,11 +23,29 @@ export default async function BlogPage() {
                     </Reveal>
                 </div>
 
-                <div className="flex flex-col items-center justify-center py-16 px-6">
-                    <div
-                        className="rounded-lg border border-dashed border-muted-foreground/30 bg-muted/20 p-12 text-center">
-                        <p className="text-lg font-medium text-muted-foreground">
-                            No blog posts yet
+                <div className="flex flex-col items-center justify-center py-24 px-6">
+                    <div className="rounded-2xl border-2 border-dashed border-muted-foreground/40 bg-gradient-to-br from-muted/30 via-muted/20 to-background p-16 text-center shadow-lg max-w-2xl">
+                        <div className="mb-6">
+                            <svg
+                                className="mx-auto h-16 w-16 text-muted-foreground/60"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={1.5}
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                                />
+                            </svg>
+                        </div>
+                        <h3 className="text-2xl font-bold mb-3 text-foreground">
+                            No Blog Posts Yet
+                        </h3>
+                        <p className="text-base text-muted-foreground max-w-md mx-auto">
+                            I&apos;m currently working on creating content. Check back soon for exciting articles and insights!
                         </p>
                     </div>
                 </div>
