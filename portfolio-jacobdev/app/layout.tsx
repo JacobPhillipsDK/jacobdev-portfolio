@@ -31,6 +31,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className="dark">
+        <head>
+            <link rel="manifest" href="/manifest.json" />
+            <meta name="theme-color" content="#ffffff" />
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+            <meta name="apple-mobile-web-app-title" content="jacobdev" />
+        </head>
         <body className={`${bricolage_grotesque.className} bg-background text-foreground relative flex min-h-[100dvh] flex-col`}>
             <TransitionProvider speed={2}>
                 <Header/>

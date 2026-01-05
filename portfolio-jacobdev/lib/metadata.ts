@@ -50,27 +50,22 @@ export function createMetadata(override: Metadata): Metadata {
       ...override.twitter
     },
     icons: {
-      icon: '/favicon/favicon.svg',
-      shortcut: '/favicon/favicon.svg',
-      apple: [
+      icon: [
         {
-          url: '/favicon/apple-touch-icon.png',
-          sizes: '180x180',
+          url: '/icon0.svg',
+          type: 'image/svg+xml'
+        },
+        {
+          url: '/icon1.png',
           type: 'image/png'
         }
       ],
-      other: [
+      shortcut: '/icon0.svg',
+      apple: [
         {
-          rel: 'icon',
-          type: 'image/png',
-          sizes: '16x16',
-          url: '/favicon/favicon-16x16.png'
-        },
-        {
-          rel: 'icon',
-          type: 'image/png',
-          sizes: '32x32',
-          url: '/favicon/favicon-32x32.png'
+          url: '/apple-icon.png',
+          sizes: '180x180',
+          type: 'image/png'
         }
       ]
     },
