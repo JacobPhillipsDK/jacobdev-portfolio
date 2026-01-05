@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 
 function getPayloadOrigin(): string {
-    const raw = process.env.PAYLOAD_API_URL ?? process.env.NEXT_PUBLIC_SITE_URL ?? "";
+    const raw = process.env.PAYLOAD_URL ?? "";
     if (!raw) return "";
     try {
         return new URL(raw).origin;

@@ -16,8 +16,8 @@ function buildRemotePatterns() {
         },
     ];
 
-    // If you have a PAYLOAD_API_URL env var (prod), add it too
-    const payload = process.env.PAYLOAD_API_URL ?? process.env.NEXT_PUBLIC_SITE_URL;
+    // If you have a PAYLOAD_URL env var, add it too
+    const payload = process.env.PAYLOAD_URL;
     if (payload) {
         try {
             const u = new URL(payload);
@@ -28,7 +28,7 @@ function buildRemotePatterns() {
                 pathname: "/api/media/**",
             });
         } catch (e) {
-            console.warn("Invalid PAYLOAD_API_URL:", payload);
+            console.warn("Invalid PAYLOAD_URL:", payload);
         }
     }
 

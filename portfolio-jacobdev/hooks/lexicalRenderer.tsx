@@ -362,9 +362,9 @@ function renderLexicalNodeServer(node: any, key?: string | number, inlineMap?: a
 
         // If src is relative, prefix with server base
         if (typeof src === "string" && src.startsWith("/")) {
-            const payloadApi = process.env.PAYLOAD_API_URL ?? process.env.NEXT_PUBLIC_SITE_URL ?? "";
-            if (payloadApi) {
-                const base = payloadApi.replace(/\/+$/, "");
+            const payloadUrl = process.env.PAYLOAD_URL ?? "";
+            if (payloadUrl) {
+                const base = payloadUrl.replace(/\/+$/, "");
                 src = base + src;
             }
         }

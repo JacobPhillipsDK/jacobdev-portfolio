@@ -57,7 +57,8 @@ export type FetchListOptions = FetchCommonOptions & {
 let _authPrefix: "API-Key" | "users API-Key" | null = null;
 
 function getPayloadApiBase(): string {
-    const raw = process.env.PAYLOAD_API_URL ?? "http://localhost:3000/api";
+    const raw = process.env.PAYLOAD_URL;
+    if (!raw) throw new Error("PAYLOAD_URL environment variable is not set");
     const trimmed = raw.replace(/\/+$/, "");
     return trimmed.endsWith("/api") ? trimmed : `${trimmed}/api`;
 }
