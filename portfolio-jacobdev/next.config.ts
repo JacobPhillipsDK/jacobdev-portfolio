@@ -49,6 +49,8 @@ const nextConfig: NextConfig = {
         // allowed qualities (Next.js 16+ requires this)
         qualities: [25, 50, 70, 75, 90, 100],
         unoptimized: isDev,
+        // Allows Next/Image optimizer to fetch from private Docker IPs (like blueprintcms-app -> 172.18.0.2)
+        dangerouslyAllowLocalIP: true
     },
 
     ...(isStandalone ? {output: "standalone"} : {}),
